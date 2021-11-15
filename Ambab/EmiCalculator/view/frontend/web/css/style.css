@@ -1,0 +1,22 @@
+.collapsible {
+border: 1px solid #ddd;
+border-radius: 2px;
+}
+
+.head-accordion {
+background: #eee;
+padding: 1rem;
+cursor: pointer;
+font-size: 1.5rem;
+font-weight: bold;
+}
+.head-accordion:first-child {
+border-bottom: 1px solid #ddd;
+}
+.head-accordion:nth-last-child(2) {
+border-top: 1px solid #ddd;
+}
+
+.content-accodion {
+padding: 1rem 2rem;
+}

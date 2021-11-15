@@ -1,0 +1,176 @@
+<?php
+//  $_product = $this->getProduct();
+//  $productprice = $_product->getFinalPrice(); 
+//  echo $productprice;
+// $currentProduct = $block->getCurrentProduct();
+// $ProductId = $currentProduct->getId();
+// echo $ProductId;
+
+$currentProductPrice = $block->getProductPrize();
+echo $currentProductPrice;
+
+// $bl = $block->getRateOfInterest();
+// print_r($bl);
+// foreach($bl->getData() as $rawdata)
+// {
+//     echo "<pre>";
+//     print_r($rawdata);
+//     echo "</pre>";
+// }
+
+
+$data = $block->getCollection();
+$rateOfInterest = [];
+$duration = [];
+foreach($data as $rawdata)
+{
+    echo "<pre>";
+    // print_r($rawdata->getInterestRate());
+    array_push($rateOfInterest, $rawdata->getInterestRate());
+    // print_r($rawdata->getDuration());
+    array_push($duration, $rawdata->getDuration());
+    echo "</pre>";
+}
+
+echo "Interest Rate:";
+print_r($rateOfInterest);
+echo "<br>";
+echo "Duration:";
+print_r($duration);
+exit();
+
+
+echo "==============================================================";
+
+?>
+
+
+
+
+<div id="lowest_emi_amount">EMI Starting From <a href="#">$7.9 Per Month</a></div>
+<div id="popup-modal">
+
+<?php
+
+//     $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+//     $model=$objectManager->create('Ambab\EmiCalculator\Model\Allemi');
+//     $datacollection=$model->getCollection();
+//    echo"<table>";
+//    echo" <tr>";
+//    echo"<th>ID</th>";
+//    echo"<th>Bank Name</th>";
+//    echo"<th>Interest Rate</th>";
+//    echo"<th>Duration</th>";
+//    echo"</tr>";
+//         foreach ($datacollection as $data) {
+//             echo" <tr>";
+//             echo" <td>".$data->getId()."</td>";
+//             echo"<td>".$data->getBankName()."</td>";
+//             echo" <td>".$data->getInterestRate()."</td>";
+//             echo" <td>".$data->getDuration()."</td>";
+//             echo"</tr>";
+//         }
+//         echo" </table>";
+ 
+$currentProductPrice = $block->getProductPrize();
+echo "Current Price= " . $currentProductPrice;
+// exit;
+
+$data = $block->getCollection();
+$rateOfInterest = [];
+$duration = [];
+$EMI = [];
+$EMIamount = $block->getEmiAmount($currentProductPrice, $rateOfInterest, $duration);
+foreach($data as $rawdata)
+{
+    echo "<pre>";
+    // print_r($rawdata->getInterestRate());
+    array_push($rateOfInterest, $rawdata->getInterestRate());
+    // print_r($rawdata->getDuration());
+    array_push($duration, $rawdata->getDuration());
+    array_push($EMI, $EMIamount->getData());
+    print_r($EMI);
+    // print_r($EMI);
+    echo "</pre>";
+}
+
+echo "Interest Rate:";
+print_r($rateOfInterest);
+
+
+echo "<br>";
+echo "Duration:";
+print_r($duration);
+// exit;
+
+
+
+
+// print_r($EMI);
+
+?>
+<table>
+<?php
+    
+    $data = $block->getEmiDetails($bank['bank_name']);
+    foreach ($data->getData() as $emidetails)
+    {
+        echo " <tr>";
+    echo "<th>ID</th>";
+    echo "<th>Bank Name</th>";
+    echo "<th>Interest Rate</th>";
+    echo "<th>Duration</th>";
+    echo "<th>Final Amount</th>";
+    echo "</tr>";
+
+        // $emiamount = $block->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $emidetails['duration']);
+        //     $totalAmount = $emiamount + $currentProductPrice;
+        //     echo "<tr>";
+        //     echo "<td>" . $emidetails['id'] . "</td>";
+        //     echo "<td>" . $emidetails['bank_name'] . "</td>";
+        //     echo "<td>" . $emidetails['interest_rate'] . "</td>";
+        //     echo "<td>" . $emidetails['duration'] . "</td>";
+        //     echo "<td>" . round($totalAmount, 2) . "</td>";
+        //     echo "</tr>";
+        print_r($emidetails);
+        echo "</div>";
+    }
+    echo "</table>";
+    ?> 
+
+
+</div>
+
+
+
+
+<script>
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function($,modal) 
+        {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: 'EMI STATUS',
+                buttons: [{
+                    text: $.mage.__('Close'),
+                    class: '',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }]
+            };
+            var popup = modal(options, $('#popup-modal'));
+            $("#lowest_emi_amount").on('click',function()
+            {
+                $("#popup-modal").modal("openModal");
+            });
+        }
+    );
+</script>
+

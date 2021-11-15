@@ -1,0 +1,79 @@
+<div id="popup" style="display: none;"> 
+<?php
+   //VARIABLES
+    $blockobj = $block->getLayout()->createBlock('Ambab\EmiCalculator\Block\Catalog\Product\View');
+    $bankName = $blockobj->getBankName();
+    $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+    $cart = $objectManager->get('\Magento\Checkout\Model\Cart'); 
+    $currentProductPrice = $cart->getQuote()->getBaseSubtotal();
+
+    ?>
+<div id="element" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": false, "multipleCollapsible": false}}' class="collapsible">
+   
+        <?php foreach ($bankName as $bank): ?>
+        <div class="head-accordion" data-role="collapsible">
+            <div data-role="trigger">
+                <span><?php echo $bank['bank_name']; ?></span>
+            </div>
+        </div>
+        
+        
+        <div data-role="content" class="content-accodion">
+            <table border="1px">
+                <?php
+        
+                    echo " <tr>";
+                    echo "<th>EMI PLANS</th>";
+                    echo "<th>Interest Amount(%)</th>";
+                    echo "<th>Final Amount </th>";
+                    echo "</tr>";
+                    $data = $blockobj->getEmiDetails($bank['bank_name']);
+          
+                    foreach ($data->getData() as $emidetails)
+                    {
+                        $emiamount = $blockobj->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $emidetails['duration']);
+                        $duration = $emidetails['duration'];
+                        $totalAmount = $emiamount * $duration;
+                        $monthlyAmount = $totalAmount/ $duration;
+                        $interestPM = ($totalAmount - $currentProductPrice);
+                        echo "<tr>";
+                        echo "<td>" . $emidetails['duration']."EMIs @ $". round($emiamount,2)."</td>";
+                        echo "<td>"."$".round($interestPM, 2)." (".$emidetails['interest_rate']."%)"."</td>";
+                        echo "<td>"."$".round($totalAmount,2)."</td>";
+                        echo "</tr>";
+                    }
+                ?>
+            </table>    
+        </div>  
+        <?php endforeach;?> 
+        
+    </div>
+</div>
+</div>
+
+
+
+<style>
+.collapsible {
+border: 1px solid #ddd;
+border-radius: 2px;
+}
+
+.head-accordion {
+background: #eee;
+padding: 1rem;
+cursor: pointer;
+font-size: 1.5rem;
+font-weight: bold;
+}
+.head-accordion:first-child {
+border-bottom: 1px solid #ddd;
+}
+.head-accordion:nth-last-child(2) {
+border-top: 1px solid #ddd;
+}
+
+.content-accodion {
+padding: 1rem 2rem;
+}
+</style>

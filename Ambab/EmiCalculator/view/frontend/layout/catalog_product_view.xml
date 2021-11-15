@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page layout="1column" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head> 
+        <css src="Ambab_EmiCalculator::css/style.css" />
+        <script src="Ambab_EmiCalculator::js/script.js" />
+    </head>   
+    <body>
+        <referenceBlock name="product.info.main">
+            <block class="Ambab\EmiCalculator\Block\Catalog\Product\View" name="catalog.product.view" ifconfig="ambab_emi/general/enable"
+                  after="product.info.price"  as="extra_options" template="Ambab_EmiCalculator::catalog/product/view.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

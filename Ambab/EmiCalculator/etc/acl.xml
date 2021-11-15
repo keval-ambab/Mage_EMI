@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Ambab_EmiCalculator::ambab" title="Ambab" sortOrder="51">
+                    <resource id="Ambab_EmiCalculator::emical_allemi" title="All Emi" sortOrder="10">
+						<resource id="Ambab_EmiCalculator::save" title="Save Emi" translate="title" sortOrder="10" />
+						<resource id="Ambab_EmiCalculator::emi_delete" title="Delete Emi" translate="title" sortOrder="20" />
+					</resource>
+                </resource>
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Ambab_EmiCalculator::config" title="Ambab Emi" translate="title"/>
+                        </resource>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>
