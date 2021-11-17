@@ -2,29 +2,30 @@
 namespace Ambab\EmiCalculator\Block\Catalog\Product;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Block\Product\AbstractProduct;
-// Use Magento\Catalog\Model\ProductFactory;
 use Ambab\EmiCalculator\Model\AllemiFactory;
 use Ambab\EmiCalculator\Api\AllemiRepositoryInterface;
 use Magento\Checkout\Model\Cart;
+use Magento\Framework\Message\ManagerInterface;
 
 class View extends AbstractProduct
 {
     protected $_product;
-    // protected $productFactory;
     protected $registry;
     protected $_allemiFactory;
     protected $_allemiRepositoryInterface;
     protected $subTotal;
+    protected $messageManager;
 
     public function __construct(Context $context, array $data = [],
-    // ProductFactory $productFactory,
-    \Magento\Framework\Registry $registry, AllemiFactory $allemiFactory, AllemiRepositoryInterface $allemiRepositoryInterface, \Magento\Checkout\Model\Cart $subTotal)
+    ManagerInterface $messageManager,
+    \Magento\Framework\Registry $registry, AllemiFactory $allemiFactory, AllemiRepositoryInterface $allemiRepositoryInterface, \Magento\Checkout\Model\Cart $subTotal
+    )
     {
         $this->_allemiFactory = $allemiFactory;
         $this->_allemiRepositoryInterface = $allemiRepositoryInterface;
         $this->registry = $registry;
         $this->subTotal = $subTotal;
-        // $this->productFactory = $productFactory;
+        $this->messageManager = $messageManager;
         parent::__construct($context, $data);
     }
 
@@ -40,20 +41,12 @@ class View extends AbstractProduct
             ->registry('current_product');
     }
 
-    // public function getPriceById($id)
-    // {
-    //     $id =  700;//Product ID
-    //     $product = $this->productFactory->create();
-    //     $productPriceById = $product->load($id)->getPrice();
-    //     return $productPriceById;
-    // }
     public function getCollection()
     {
         return $this
             ->_allemiFactory
             ->create()
             ->getCollection();
-
     }
 
     public function getProductPrize()
@@ -70,12 +63,6 @@ class View extends AbstractProduct
         return $EMI;
 
     }
-
-    public function hello(){
-        return "hello";
-    }
-
-
     // public function getRateOfInterest($id)
     // {
     //     $irdata = $this
@@ -117,7 +104,9 @@ class View extends AbstractProduct
         return $this->subTotal->getQuote()->getBaseSubtotal();
     }
 
-
-
+    public function addWarningMsg(){
+        $message = __('EMI Option not available for your product'); 
+        return $this->messageManager->addWarningMessage($message);
+    }
 }
 

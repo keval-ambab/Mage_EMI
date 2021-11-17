@@ -7,7 +7,7 @@
     <body>
         <referenceBlock name="product.info.main">
             <block class="Ambab\EmiCalculator\Block\Catalog\Product\View" name="catalog.product.view" ifconfig="ambab_emi/general/enable"
-                  after="product.info.price"  as="extra_options" template="Ambab_EmiCalculator::catalog/product/js.phtml"/>
+                  after="product.info.price"  as="extra_options" template="Ambab_EmiCalculator::catalog/product/view.phtml"/>
         </referenceBlock>
     </body>
 </page>

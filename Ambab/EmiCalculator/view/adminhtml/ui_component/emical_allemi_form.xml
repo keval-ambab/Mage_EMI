@@ -81,13 +81,14 @@
 		<field name="bank_name" sortOrder="20" formElement="input">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
+				<item name="notice" xsi:type="string" translate="true">Add Bank Intials without space</item>
 					<item name="source" xsi:type="string">allemi</item>
 				</item>
 			</argument>
 			<settings>
 				<validation>
 					<rule name="required-entry" xsi:type="boolean">true</rule>
-					<rule name="validate-alpha" xsi:type="boolean">true</rule>
+					<rule name="validate-alpha-space" xsi:type="boolean">true</rule>
 					<rule name="min_text_length" xsi:type="number">3</rule>
 					<rule name="max_text_length" xsi:type="number">13</rule>
 				</validation>
@@ -99,6 +100,7 @@
 		<field name="interest_rate" sortOrder="30" formElement="input">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
+					<item name="notice" xsi:type="string" translate="true">Add Interest between 5% to 20%</item>
 					<item name="source" xsi:type="string">allemi</item>
 				</item>
 			</argument>
@@ -116,6 +118,7 @@
 		<field name="duration" sortOrder="40" formElement="input">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
+					<item name="notice" xsi:type="string" translate="true">Add Month between 3 to 34</item>
 					<item name="source" xsi:type="string">allemi</item>
 				</item>
 			</argument>

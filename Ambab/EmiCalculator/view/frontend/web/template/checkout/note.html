@@ -1,5 +1,22 @@
-<div class="note"> 
-    <input type="radio" class="action popup-open"data-bind="mageInit: {'Ambab_EmiCalculator/js/checkout/popup':{}}" /> 
-        <span><!-- ko i18n: 'EMI Options'--><!-- /ko --></span>     
-    </a> 
+<head>
+  <style>
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 25px;
+      width: 25px;
+      background-color: #eee;
+    }
+  </style>
+</head>
+
+<div class="note">
+  <input
+    id="emiop"
+    type="radio"
+    class="action popup-open"
+    data-bind="mageInit: {'Ambab_EmiCalculator/js/checkout/popup':{}}"
+  />
+  <label for="emiop">EMI Options</label>
 </div>
