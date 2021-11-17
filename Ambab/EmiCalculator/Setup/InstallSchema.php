@@ -39,8 +39,8 @@ class InstallSchema implements InstallSchemaInterface
                 )
                 ->addColumn(
                     'interest_rate',
-                    Table::TYPE_INTEGER,
-                    null,
+                    Table::TYPE_DECIMAL,
+                    '10,2',
                     ['nullable' => false],
                     'Interest Rate'
                 )
@@ -58,12 +58,13 @@ class InstallSchema implements InstallSchemaInterface
                     ['nullable' => false, 'default' => '0'],
                     'Status'
                 )->addIndex(
-                    'ambab_emi', //table name
-                    'bank_name',    // index name
-                    [
-                        'bank_name'   // filed or column name 
-                    ],
-                    \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT //type of index
+                    $setup->getIdxName(
+                        'ambab_emi',
+                        ['bank_name'],
+                        \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT
+                    ),
+                    ['bank_name'],
+                    ['type' => \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_FULLTEXT]
                 )
                 //Set comment for ambab_emi table
                 ->setComment('Ambab Emi Table')
