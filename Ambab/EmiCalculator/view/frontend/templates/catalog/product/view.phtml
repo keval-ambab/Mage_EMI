@@ -2,24 +2,19 @@
 
 <div id="element" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": false, "multipleCollapsible": true}}' class="collapsible">
     <?php
-
     //VARIABLES
     $currentProductPrice = $block->getProductPrize();
-    // echo "Current Price= " . $currentProductPrice . "<br>";
     $bankName = $block->getBankName()->getData();
     ?>
         <?php foreach ($bankName as $bank): ?>
         <div class="head-accordion" data-role="collapsible">
             <div data-role="trigger">
-                <span><?php echo $bank['bank_name']." "."BANK"; ?></span>
+                <span><?php echo $bank['bank_name']; ?></span>
             </div>
         </div>
-        
-        
         <div data-role="content" class="content-accodion">
             <table border="1px">
                 <?php
-        
                     echo " <tr>";
                     echo "<th>EMI PLANS</th>";
                     echo "<th>Interest Amount(%)</th>";
@@ -29,7 +24,6 @@
                     $minAmount = [];
                     foreach ($data->getData() as $emidetails)
                     {
-
                         $emiamount = $block->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $emidetails['duration']);
                         $duration = $emidetails['duration'];
                         $totalAmount = $emiamount * $duration;
@@ -45,47 +39,13 @@
                         echo "<td>"."$".round($interestPM, 2)." (".$emidetails['interest_rate']."%)"."</td>";
                         echo "<td>"."$".round($totalAmount,2)."</td>";
                         echo "</tr>";
-                        // print_r($emidetails);
-                        
-                        // $interestAmmount = $block->calculateEmi($finalPrice, $emi['interest'], $emi['month']);
-                        // $interestAmmount = ceil($interestAmmount);
-                        // $permonth = round($finalPrice / $emi['month'], 2);
-                
-                
-
-
                     }
                 ?>
             </table>    
         </div>  
-        <?php endforeach;?> 
+        <?php endforeach; ?> 
         
     </div>
 </div>
 <div id="lowest_emi_amount">EMI Starting From<a href="#">$<?php echo round(min($minAmount),2);?></a></div>
 
-
-<style>
-.collapsible {
-border: 1px solid #ddd;
-border-radius: 2px;
-}
-
-.head-accordion {
-background: #eee;
-padding: 1rem;
-cursor: pointer;
-font-size: 1.5rem;
-font-weight: bold;
-}
-.head-accordion:first-child {
-border-bottom: 1px solid #ddd;
-}
-.head-accordion:nth-last-child(2) {
-border-top: 1px solid #ddd;
-}
-
-.content-accodion {
-padding: 1rem 2rem;
-}
-</style>

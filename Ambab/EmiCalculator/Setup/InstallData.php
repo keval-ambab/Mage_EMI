@@ -12,7 +12,13 @@ class InstallData implements InstallDataInterface
      
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        $emidata = [
+        $emidata = [ 
+            [
+                'bank_name' => 'TEST',
+                'interest_rate' => 6,
+                'duration' => 3,
+                'status' => 1,
+            ],
             [
                 'bank_name' => 'SBI',
                 'interest_rate' => 6,

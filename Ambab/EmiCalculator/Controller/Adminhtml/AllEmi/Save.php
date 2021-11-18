@@ -43,6 +43,10 @@ class Save extends \Magento\Backend\App\Action
             ?: \Magento\Framework\App\ObjectManager::getInstance()->get(\Ambab\EmiCalculator\Api\AllemiRepositoryInterface::class);
         parent::__construct($context);
     }
+
+  
+
+   
 	
 	/**
      * Authorization level
@@ -73,6 +77,25 @@ class Save extends \Magento\Backend\App\Action
                 $data['id'] = null;
             }
 
+            function filterInput($input)
+            {
+                $input = htmlspecialchars($input);
+                $input = stripslashes($input);
+                $input = trim($input);
+                return $input;
+            }
+            $formkey = filterInput($data['form_key']);
+            $bank_name = filterInput($data['bank_name']);
+            $interest_rate = filterInput($data['interest_rate']);
+            $duration = filterInput($data['duration']);
+            $status = filterInput($data['status']);
+            
+            $validateData['form_key'] = $formkey;
+            $validateData['bank_name'] = strtoupper($bank_name)." "."BANK";
+            $validateData['interest_rate'] = $interest_rate;
+            $validateData['duration'] = $duration;
+            $validateData['status'] = $status;
+
             /** @var \Ambab\EmiCalculator\Model\Allemi $model */
             $model = $this->allemiFactory->create();
             // $result = [
@@ -94,7 +117,7 @@ class Save extends \Magento\Backend\App\Action
                 }
             }
 
-            $model->setData($data);
+            $model->setData($validateData);
             
 
             $this->_eventManager->dispatch(

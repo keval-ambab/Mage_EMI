@@ -3,7 +3,6 @@
 	<head>
 		<title>EMI</title>
 		<script src="Ambab_EmiCalculator::js/custom_validation.js"/>        
-		<css src="Ambab_EmiCalculator::css/style.css"/>
 	</head>
 	<body>
 		<referenceContainer name="content">

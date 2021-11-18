@@ -9,13 +9,12 @@
         $cart = $objectManager->get('\Magento\Checkout\Model\Cart'); 
         $currentProductPrice = $cart->getQuote()->getBaseSubtotal();
     ?>
-    <?php  if(isset($emioptions)){ ?>
     <div id="element" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": false, "multipleCollapsible": false}}' class="collapsible">
     
             <?php foreach ($bankName as $bank): ?>
             <div class="head-accordion" data-role="collapsible">
                 <div data-role="trigger">
-                    <span><?php echo $bank['bank_name']." "."BANK"; ?></span>
+                    <span><?php echo $bank['bank_name']; ?></span>
                 </div>
             </div>
             
@@ -50,9 +49,6 @@
                 </table>    
             </div>  
             <?php endforeach;
-                }else{
-                    echo $$blockobj1->addWarningMsg();
-                }
             ?> 
         </div>
     </div>

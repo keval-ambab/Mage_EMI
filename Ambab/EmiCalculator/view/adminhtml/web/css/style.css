@@ -1,8 +1,0 @@
-.admin_menu .level-0.item-ambab > a:before,
-.admin_menu .level-0.item-AMBAB > a:before,
-.admin_menu .level-0.item-Ambab > a:before{
-    content: url('../images/photo.png');
-    height: 28px;
-    margin: 0 auto;
-    width: 30px;
-}
