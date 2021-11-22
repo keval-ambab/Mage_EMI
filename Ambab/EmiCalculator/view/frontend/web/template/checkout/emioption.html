@@ -1,20 +1,11 @@
-<head>
-  <style>
-    .checkmark {
-      height: 15px;
-      width: 15px;
-      background-color: #f75402;
-    }
-  </style>
-</head>
-
-<div class="note">
-  <input
+<div class="note" data-bind="visible : emioptions">
+  <a
     id="emiop"
-    type="radio"
-    class="action popup-open checkmark"
+    class="action popup-open"
     data-bind="mageInit: {'Ambab_EmiCalculator/js/checkout/popup':{}}"
     value="EMI Options"
-  />
-  <label for="emiop">EMI Options</label>
+    href="#"
+  >
+    EMI Options</a
+  >
 </div>

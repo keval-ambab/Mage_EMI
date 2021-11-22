@@ -1,13 +1,14 @@
 <div id="popup" style="display: none;"> 
 <?php
    //VARIABLES
-   $blockobj1 = $block->getLayout()->createBlock('Ambab\EmiCalculator\Block\Catalog\Product\Js');
-   $emioptions = $blockobj1->getEmiOptionalYesNo();
+        $blockobj1 = $block->getLayout()->createBlock('Ambab\EmiCalculator\Block\Catalog\Product\Js');
+        $emioptions = $blockobj1->getEmiOptionalYesNo();        
         $blockobj = $block->getLayout()->createBlock('Ambab\EmiCalculator\Block\Catalog\Product\View');
         $bankName = $blockobj->getBankName();
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $cart = $objectManager->get('\Magento\Checkout\Model\Cart'); 
-        $currentProductPrice = $cart->getQuote()->getBaseSubtotal();
+        // $cart = $objectManager->get('\Magento\Checkout\Model\Cart'); 
+        // $currentProductPrice = $cart->getQuote()->getBaseSubtotal();
+        $currentProductPrice = $blockobj->getGrandTotal();
     ?>
     <div id="element" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": false, "multipleCollapsible": false}}' class="collapsible">
     
@@ -33,8 +34,8 @@
             
                         foreach ($data->getData() as $emidetails)
                         {
-                            $emiamount = $blockobj->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $emidetails['duration']);
                             $duration = $emidetails['duration'];
+                            $emiamount = $blockobj->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $emidetails['duration']);
                             $totalAmount = $emiamount * $duration;
                             $monthlyAmount = $totalAmount/ $duration;
                             $interestPM = ($totalAmount - $currentProductPrice);
@@ -48,8 +49,11 @@
                     ?>
                 </table>    
             </div>  
-            <?php endforeach;
-            ?> 
+            <?php endforeach;?> 
         </div>
     </div>
 </div>
+
+<script>
+    var emioptions = <?php echo json_encode($emioptions); ?>;
+</script>

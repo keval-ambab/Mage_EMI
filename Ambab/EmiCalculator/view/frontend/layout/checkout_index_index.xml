@@ -18,7 +18,7 @@
                                                     <item name="children" xsi:type="array">
                                                         <item name="afterMethods" xsi:type="array">
                                                             <item name="children" xsi:type="array">
-                                                                <item name="custom-checkbox" xsi:type="array">
+                                                                <item name="custom-emioption" xsi:type="array">
                                                                     <item name="component" xsi:type="string">Ambab_EmiCalculator/js/checkout/checkout-popup-note</item>
                                                                     <item name="displayArea" xsi:type="string">before-place-order</item>
                                                                     <item name="sortOrder" xsi:type="string">3</item>
@@ -40,7 +40,7 @@
             </arguments>
         </referenceBlock>
         <referenceContainer name="content">
-                <block class="Magento\Framework\View\Element\Template" name="popup" as="popup" template="Ambab_EmiCalculator::popup.phtml" ifconfig="ambab_emi/general/enable" after="-">
+                <block class="Magento\Framework\View\Element\Template" name="popup" as="popup" template="Ambab_EmiCalculator::popup.phtml" after="-">
                     <block class="Magento\Cms\Block\Block" name="popup-content">
                         <arguments>
                             <argument name="block_id" xsi:type="string">popup-content</argument>

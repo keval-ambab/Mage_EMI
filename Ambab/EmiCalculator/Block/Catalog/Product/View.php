@@ -13,18 +13,18 @@ class View extends AbstractProduct
     protected $registry;
     protected $_allemiFactory;
     protected $_allemiRepositoryInterface;
-    protected $subTotal;
+    protected $grandTotal;
     protected $messageManager;
 
     public function __construct(Context $context, array $data = [],
     ManagerInterface $messageManager,
-    \Magento\Framework\Registry $registry, AllemiFactory $allemiFactory, AllemiRepositoryInterface $allemiRepositoryInterface, \Magento\Checkout\Model\Cart $subTotal
+    \Magento\Framework\Registry $registry, AllemiFactory $allemiFactory, AllemiRepositoryInterface $allemiRepositoryInterface, \Magento\Checkout\Model\Cart $grandTotal
     )
     {
         $this->_allemiFactory = $allemiFactory;
         $this->_allemiRepositoryInterface = $allemiRepositoryInterface;
         $this->registry = $registry;
-        $this->subTotal = $subTotal;
+        $this->grandTotal = $grandTotal;
         $this->messageManager = $messageManager;
         parent::__construct($context, $data);
     }
@@ -56,13 +56,7 @@ class View extends AbstractProduct
         return $productprice;
     }
 
-    public function getEmiAmount($currentProductPrice, $rateOfInterest, $duration)
-    {
-        $rateOfInterest = $rateOfInterest / (12 * 100);
-        $EMI = $currentProductPrice * $rateOfInterest * (pow(1 + $rateOfInterest, $duration) / (pow(1 + $rateOfInterest, $duration) - 1));
-        return $EMI;
-
-    }
+   
     // public function getRateOfInterest($id)
     // {
     //     $irdata = $this
@@ -80,7 +74,8 @@ class View extends AbstractProduct
             ->create();
         $collection = $irdata->getCollection()
             ->addFieldToFilter('bank_name', ['like' => $bankName])
-            ->addFieldToFilter('status', ['eq' => '1'])
+            ->addFieldToFilter('status', array('eq' => '1'))
+            // addFieldToFilter('status', array('eq' => '1'))
             ->setOrder('duration','ASC')
             ->load();
         return $collection;
@@ -94,19 +89,49 @@ class View extends AbstractProduct
         $collection = $bank->getCollection()
             ->distinct(true)
             ->addFieldToSelect('bank_name')
+            ->addFieldToFilter('status', array('eq' => '1'))
             ->setOrder('bank_name','ASC')
             ->load();
 
         return $collection;
     }
 
-    public function getSubTotal(){
-        return $this->subTotal->getQuote()->getBaseSubtotal();
+    // public function getEmiPlans($currentProductPrice, $rateOfInterest, $duration){
+    //     $emiamount = getEmiAmount($currentProductPrice, $rateOfInterest, $duration);
+    //     $totalAmount = $emiamount * $duration;
+    //     // $interestPM = ($totalAmount - $currentProductPrice)/$duration;
+    // }
+
+     public function getEmiAmount($currentProductPrice, $rateOfInterest, $duration)
+    {
+        $rateOfInterest = $rateOfInterest / (12 * 100);
+        $EMI = $currentProductPrice * $rateOfInterest * (pow(1 + $rateOfInterest, $duration) / (pow(1 + $rateOfInterest, $duration) - 1));
+        return $EMI;
+
+    }
+    
+    public function getTotalAmount($currentProductPrice,$rateOfInterest,$emiamount,$duration){
+        $emiamount = $this->getEmiAmount($currentProductPrice, $rateOfInterest, $duration);
+        $totalAmount = $emiamount * $duration;
+        return $totalAmount;
+    }
+    
+    public function getMonthlyAmount($currentProductPrice,$rateOfInterest,$totalAmount,$duration,$emiamount){
+        $totalAmount = $this->getTotalAmount($currentProductPrice,$rateOfInterest,$emiamount,$duration);
+        $monthlyAmount = $totalAmount/ $duration;
+        return $monthlyAmount;
+        
+    }
+    public function getMonthlyInterst($currentProductPrice,$duration,$emiamount){
+        $totalAmount = $this->getTotalAmount($currentProductPrice,$rateOfInterest,$emiamount,$duration);
+        $interestPM = ($totalAmount - $currentProductPrice);
+        return $interestPM;
     }
 
-    public function addWarningMsg(){
-        $message = __('EMI Option not available for your product'); 
-        return $this->messageManager->addWarningMessage($message);
+
+    public function getGrandTotal(){
+        // return $this->grandTotal->getQuote()->getBaseSubtotal();
+        return $this->grandTotal->getQuote()->getGrandTotal();
     }
+
 }
-

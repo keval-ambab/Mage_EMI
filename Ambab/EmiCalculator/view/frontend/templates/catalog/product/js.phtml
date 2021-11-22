@@ -1,5 +1,8 @@
-<?php 
+window.valuesConfig = <?php 
     $blockobj = $block->getLayout()->createBlock('Ambab\EmiCalculator\Block\Catalog\Product\Js');
     $emiOptions = $blockobj->getEmiOptionalYesNo();
-    echo $blockobj->getEmiOptionalYesNo();
+    // echo $blockobj->getEmiOptionalYesNo();
 ?>
+
+
+<!-- window.valuesConfig = '<?php echo $block->getEmiOptionalYesNo(); ?>'; -->

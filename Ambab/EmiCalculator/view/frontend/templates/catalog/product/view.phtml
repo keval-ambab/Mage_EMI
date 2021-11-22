@@ -5,6 +5,7 @@
     //VARIABLES
     $currentProductPrice = $block->getProductPrize();
     $bankName = $block->getBankName()->getData();
+    $minAmount = [];
     ?>
         <?php foreach ($bankName as $bank): ?>
         <div class="head-accordion" data-role="collapsible">
@@ -21,21 +22,25 @@
                     echo "<th>Final Amount </th>";
                     echo "</tr>";
                     $data = $block->getEmiDetails($bank['bank_name']);
-                    $minAmount = [];
                     foreach ($data->getData() as $emidetails)
                     {
-                        $emiamount = $block->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $emidetails['duration']);
                         $duration = $emidetails['duration'];
-                        $totalAmount = $emiamount * $duration;
-
-                        $monthlyAmount = $totalAmount/ $duration;
+                        $rateOfInterest = $emidetails['duration'];
+                        // $emiamount = $block->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $duration);
+                        // $totalAmount = $block->getTotalAmount($currentProductPrice, $rateOfInterest,$emiamount,$duration);
+                        // $monthlyAmount = $block->getMonthlyAmount($totalAmount,$duration,$emiamount);
                         // $interestPM = ($totalAmount - $currentProductPrice)/$duration;
+                        // $interestPM = $block->getMonthlyInterst($currentProductPrice,$duration,$emiamount);
+                        $emiamount = $block->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $emidetails['duration']);
+                        $totalAmount = $emiamount * $duration;
+                        $monthlyAmount = $totalAmount/ $duration;
                         $interestPM = ($totalAmount - $currentProductPrice);
+
                         array_push($minAmount, $monthlyAmount);
                         
                         echo "<tr>";
-                        echo "<td>" . $emidetails['duration']."EMIs @ $". round($emiamount,2)."</td>";
-                        // echo "<td>" . $monthlyAmount."RS | ". $emidetails['duration']." Months "."</td>";
+                        echo "<td>" . $duration."EMIs @ $". round($emiamount,2)."</td>";
+                        // echo "<td>" . $monthlyAmount."RS | ". $duration." Months "."</td>";
                         echo "<td>"."$".round($interestPM, 2)." (".$emidetails['interest_rate']."%)"."</td>";
                         echo "<td>"."$".round($totalAmount,2)."</td>";
                         echo "</tr>";
