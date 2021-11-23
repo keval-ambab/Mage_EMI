@@ -1,0 +1,18 @@
+<div id="ajaxresponse"></div>
+<?php
+$ajaxurl = $block->getAjaxUrl();
+?>
+<script type="text/x-magento-init">
+        {
+            "*": {
+                "Ambab_EmiCalculator/js/checkout": {
+                    "AjaxUrl": "<?php echo $ajaxurl; ?>",
+                    "emiamount": "<?php echo $emiamount; ?>",
+                    "duration": "<?php echo $duration; ?>",
+                    "rateOfInterest": "<?php echo $rateOfInterest; ?>",
+                    "interestPM": "<?php echo $interestPM; ?>",
+                    "totalAmount": "<?php echo $totalAmount; ?>",
+                }
+            }
+        }
+</script>

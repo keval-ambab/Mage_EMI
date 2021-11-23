@@ -14,18 +14,22 @@ class View extends AbstractProduct
     protected $_allemiFactory;
     protected $_allemiRepositoryInterface;
     protected $grandTotal;
-    protected $messageManager;
+    // protected $messageManager;
+    protected $json;
 
     public function __construct(Context $context, array $data = [],
-    ManagerInterface $messageManager,
-    \Magento\Framework\Registry $registry, AllemiFactory $allemiFactory, AllemiRepositoryInterface $allemiRepositoryInterface, \Magento\Checkout\Model\Cart $grandTotal
+    // ManagerInterface $messageManager,
+    \Magento\Framework\Registry $registry, AllemiFactory $allemiFactory, AllemiRepositoryInterface $allemiRepositoryInterface, 
+    \Magento\Checkout\Model\Cart $grandTotal,
+    \Magento\Framework\Serialize\Serializer\Json $json
     )
     {
         $this->_allemiFactory = $allemiFactory;
         $this->_allemiRepositoryInterface = $allemiRepositoryInterface;
         $this->registry = $registry;
         $this->grandTotal = $grandTotal;
-        $this->messageManager = $messageManager;
+        // $this->messageManager = $messageManager;
+        $this->json = $json;
         parent::__construct($context, $data);
     }
 
@@ -75,9 +79,12 @@ class View extends AbstractProduct
         $collection = $irdata->getCollection()
             ->addFieldToFilter('bank_name', ['like' => $bankName])
             ->addFieldToFilter('status', array('eq' => '1'))
-            // addFieldToFilter('status', array('eq' => '1'))
             ->setOrder('duration','ASC')
             ->load();
+            
+        // $jsonCollection = json_encode($collection->getData());
+        // print_r($jsonCollection);
+    
         return $collection;
     }
 
@@ -93,6 +100,8 @@ class View extends AbstractProduct
             ->setOrder('bank_name','ASC')
             ->load();
 
+            $jsonBNCollection = json_encode($collection->getData());
+            print_r($jsonBNCollection); exit;
         return $collection;
     }
 
@@ -106,27 +115,10 @@ class View extends AbstractProduct
     {
         $rateOfInterest = $rateOfInterest / (12 * 100);
         $EMI = $currentProductPrice * $rateOfInterest * (pow(1 + $rateOfInterest, $duration) / (pow(1 + $rateOfInterest, $duration) - 1));
+        print_r($EMI); exit;
         return $EMI;
-
     }
     
-    public function getTotalAmount($currentProductPrice,$rateOfInterest,$emiamount,$duration){
-        $emiamount = $this->getEmiAmount($currentProductPrice, $rateOfInterest, $duration);
-        $totalAmount = $emiamount * $duration;
-        return $totalAmount;
-    }
-    
-    public function getMonthlyAmount($currentProductPrice,$rateOfInterest,$totalAmount,$duration,$emiamount){
-        $totalAmount = $this->getTotalAmount($currentProductPrice,$rateOfInterest,$emiamount,$duration);
-        $monthlyAmount = $totalAmount/ $duration;
-        return $monthlyAmount;
-        
-    }
-    public function getMonthlyInterst($currentProductPrice,$duration,$emiamount){
-        $totalAmount = $this->getTotalAmount($currentProductPrice,$rateOfInterest,$emiamount,$duration);
-        $interestPM = ($totalAmount - $currentProductPrice);
-        return $interestPM;
-    }
 
 
     public function getGrandTotal(){

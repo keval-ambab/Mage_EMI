@@ -5,7 +5,7 @@
         $emioptions = $blockobj1->getEmiOptionalYesNo();        
         $blockobj = $block->getLayout()->createBlock('Ambab\EmiCalculator\Block\Catalog\Product\View');
         $bankName = $blockobj->getBankName();
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        // $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         // $cart = $objectManager->get('\Magento\Checkout\Model\Cart'); 
         // $currentProductPrice = $cart->getQuote()->getBaseSubtotal();
         $currentProductPrice = $blockobj->getGrandTotal();
