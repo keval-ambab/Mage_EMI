@@ -5,8 +5,9 @@ $ajaxurl = $block->getAjaxUrl();
 <script type="text/x-magento-init">
         {
             "*": {
-                "Ambab_EmiCalculator/js/checkout": {
+                "Ambab_EmiCalculator/js/custom": {
                     "AjaxUrl": "<?php echo $ajaxurl; ?>",
+                    "bank_name": "<?php echo $bank_name; ?>",
                     "emiamount": "<?php echo $emiamount; ?>",
                     "duration": "<?php echo $duration; ?>",
                     "rateOfInterest": "<?php echo $rateOfInterest; ?>",

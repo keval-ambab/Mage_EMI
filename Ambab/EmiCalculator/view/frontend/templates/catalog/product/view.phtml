@@ -1,10 +1,15 @@
+
+<?php 
+$block->JSONData();
+
+?>
 <div id="popup-modal">
 
 <div id="element" data-mage-init='{"accordion":{"openedState": "active", "collapsible": true, "active": false, "multipleCollapsible": true}}' class="collapsible">
     <?php
     //VARIABLES
     $currentProductPrice = $block->getProductPrize();
-    $bankName = $block->getBankName()->getData();
+    $bankName = $block->getBankNameData()->getData();
     $minAmount = [];
     ?>
         <?php foreach ($bankName as $bank): ?>

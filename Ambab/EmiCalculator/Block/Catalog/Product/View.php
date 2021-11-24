@@ -38,13 +38,6 @@ class View extends AbstractProduct
         return parent::_prepareLayout();
     }
 
-    public function getCurrentProduct()
-    {
-        return $this
-            ->registry
-            ->registry('current_product');
-    }
-
     public function getCollection()
     {
         return $this
@@ -60,17 +53,6 @@ class View extends AbstractProduct
         return $productprice;
     }
 
-   
-    // public function getRateOfInterest($id)
-    // {
-    //     $irdata = $this
-    //         ->_allemiFactory
-    //         ->create();
-    //     $collection = $irdata->getCollection()
-    //         ->addFieldToFilter('id', ['like' => $id])->load();
-    //     return $collection;
-    // }
-
     public function getEmiDetails($bankName)
     {
         $irdata = $this
@@ -81,14 +63,12 @@ class View extends AbstractProduct
             ->addFieldToFilter('status', array('eq' => '1'))
             ->setOrder('duration','ASC')
             ->load();
-            
         // $jsonCollection = json_encode($collection->getData());
         // print_r($jsonCollection);
-    
         return $collection;
     }
 
-    public function getBankName()
+    public function getBankNameData()
     {
         $bank = $this
             ->_allemiFactory
@@ -99,31 +79,36 @@ class View extends AbstractProduct
             ->addFieldToFilter('status', array('eq' => '1'))
             ->setOrder('bank_name','ASC')
             ->load();
-
-            $jsonBNCollection = json_encode($collection->getData());
-            print_r($jsonBNCollection); exit;
-        return $collection;
+            // $jsonBNCollection = json_encode($collection->getData());
+            // print_r($jsonBNCollection); exit;
+            return $collection;
     }
 
-    // public function getEmiPlans($currentProductPrice, $rateOfInterest, $duration){
-    //     $emiamount = getEmiAmount($currentProductPrice, $rateOfInterest, $duration);
-    //     $totalAmount = $emiamount * $duration;
-    //     // $interestPM = ($totalAmount - $currentProductPrice)/$duration;
-    // }
-
-     public function getEmiAmount($currentProductPrice, $rateOfInterest, $duration)
-    {
+     public function getEmiAmount($currentProductPrice, $rateOfInterest, $duration){
         $rateOfInterest = $rateOfInterest / (12 * 100);
         $EMI = $currentProductPrice * $rateOfInterest * (pow(1 + $rateOfInterest, $duration) / (pow(1 + $rateOfInterest, $duration) - 1));
-        print_r($EMI); exit;
+        // print_r($EMI); exit;
         return $EMI;
     }
     
-
-
     public function getGrandTotal(){
         // return $this->grandTotal->getQuote()->getBaseSubtotal();
         return $this->grandTotal->getQuote()->getGrandTotal();
     }
 
+
+    public function JSONData(){
+        $jsondata = [];
+        foreach ($this->getBankNameData() as $bankNm){
+            $jsondata['BANKNAME'][] = $bankNm['bank_name']; //print array of the bank
+            $bank = $bankNm['bank_name'];  //printing first data in the array
+                foreach($this->getEmiDetails($bank) as $emiPlans){
+                 $jsondata['DURATION'][$emiPlans['bank_name']]['duration'][] = $emiPlans['duration']; 
+                 $jsondata['RATEOFINTEREST'][$emiPlans['bank_name']]['interest_rate'][] = $emiPlans['interest_rate']; //print array of the bank          
+                }
+        }
+        echo json_encode($jsondata,JSON_PRETTY_PRINT); 
+        exit;
+        
+    }
 }

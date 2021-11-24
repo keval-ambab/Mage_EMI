@@ -33,7 +33,6 @@ class View extends Action
  
         $this->_resultPageFactory = $resultPageFactory;
         $this->_resultJsonFactory = $resultJsonFactory;
- 
         parent::__construct($context);
     }
  
@@ -45,7 +44,8 @@ class View extends Action
     {
         $result = $this->_resultJsonFactory->create();
         $resultPage = $this->_resultPageFactory->create();
-
+        
+        $bank_name = $this->getRequest()->getParam('bank_name');
         $emiamount = $this->getRequest()->getParam('emiamount');
         $duration = $this->getRequest()->getParam('duration');
         $rateOfInterest = $this->getRequest()->getParam('rateOfInterest');
@@ -53,6 +53,7 @@ class View extends Action
         $totalAmount = $this->getRequest()->getParam('currentproduct');
 
         $data = array(
+            ['bank_name'=>$bank_name],
             ['emiamount'=>$emiamount],
             ['duration'=>$duration],
             ['rateOfInterest'=>$rateOfInterest],
@@ -62,12 +63,11 @@ class View extends Action
  
         $block = $resultPage->getLayout()
                 ->createBlock('Ambab\EmiCalculator\Block\Catalog\Product\View')
-                ->setTemplate('Ambab_EmiCalculator::popup.phtml')
+                ->setTemplate('Ambab_EmiCalculator::view.phtml')
                 ->setData('data',$data)
                 ->toHtml();
  
         $result->setData(['output' => $block]);
-        Print_r($result); exit;
         return $result;
     }
  
