@@ -1,0 +1,47 @@
+    public function getEmiAmount($currentProductPrice, $rateOfInterest, $duration)
+    {
+        $rateOfInterest = $rateOfInterest / (12 * 100);
+        $EMI = $currentProductPrice * $rateOfInterest * (pow(1 + $rateOfInterest, $duration) / (pow(1 + $rateOfInterest, $duration) - 1));
+        return $EMI;
+
+    }
+    
+    public function getTotalAmount($currentProductPrice,$rateOfInterest,$duration){
+        $emiamount = $this->getEmiAmount($currentProductPrice, $rateOfInterest, $duration);
+        $totalAmount = $emiamount * $duration;
+        return $totalAmount;
+    }
+    
+    public function getMonthlyAmount($currentProductPrice,$rateOfInterest,$duration){
+        $totalAmount = $this->getTotalAmount($currentProductPrice,$rateOfInterest,$duration);
+        $monthlyAmount = $totalAmount/ $duration;
+        return $monthlyAmount;
+        
+    }
+    public function getMonthlyInterst($currentProductPrice,$rateOfInterest,$duration){
+        $totalAmount = $this->getTotalAmount($currentProductPrice,$rateOfInterest,$duration);
+        $interestPM = ($totalAmount - $currentProductPrice);
+        return $interestPM;
+    }
+
+    // public function getCurrentProduct()
+    // {
+    //     return $this
+    //         ->registry
+    //         ->registry('current_product');
+    // }
+
+    // public function getBankName($bank_name)
+    // {
+    //     return;
+    // }
+	
+	// public function getInterestRate($rateOfInterest)
+    // {
+    //     return;
+    // }
+	
+    // public function getDuration($duration)
+    // {
+    //     return;
+    // }

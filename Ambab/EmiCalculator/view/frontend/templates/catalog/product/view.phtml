@@ -29,19 +29,21 @@ $block->JSONData();
                     $data = $block->getEmiDetails($bank['bank_name']);
                     foreach ($data->getData() as $emidetails)
                     {
-                        $duration = $emidetails['duration'];
-                        $rateOfInterest = $emidetails['duration'];
+                        // $duration = $emidetails['duration'];
+                        // $rateOfInterest = $emidetails['duration'];
                         // $emiamount = $block->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $duration);
                         // $totalAmount = $block->getTotalAmount($currentProductPrice, $rateOfInterest,$emiamount,$duration);
                         // $monthlyAmount = $block->getMonthlyAmount($totalAmount,$duration,$emiamount);
                         // $interestPM = ($totalAmount - $currentProductPrice)/$duration;
                         // $interestPM = $block->getMonthlyInterst($currentProductPrice,$duration,$emiamount);
                         $emiamount = $block->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $emidetails['duration']);
-                        $totalAmount = $emiamount * $duration;
-                        $monthlyAmount = $totalAmount/ $duration;
-                        $interestPM = ($totalAmount - $currentProductPrice);
+                        // $totalAmount = $emiamount * $duration;
+                        // $monthlyAmount = $totalAmount/ $duration;
+                        // $interestPM = ($totalAmount - $currentProductPrice);
 
-                        array_push($minAmount, $monthlyAmount);
+
+                        //channge made here
+                        array_push($minAmount, $emiamount[0]);
                         
                         echo "<tr>";
                         echo "<td>" . $duration."EMIs @ $". round($emiamount,2)."</td>";

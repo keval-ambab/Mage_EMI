@@ -85,10 +85,16 @@ class View extends AbstractProduct
     }
 
      public function getEmiAmount($currentProductPrice, $rateOfInterest, $duration){
+        $emiCalulationData = [];
         $rateOfInterest = $rateOfInterest / (12 * 100);
-        $EMI = $currentProductPrice * $rateOfInterest * (pow(1 + $rateOfInterest, $duration) / (pow(1 + $rateOfInterest, $duration) - 1));
+        $emiamount = $currentProductPrice * $rateOfInterest * (pow(1 + $rateOfInterest, $duration) / (pow(1 + $rateOfInterest, $duration) - 1));
+        $totalAmount = $emiamount * $duration;
+        $monthlyAmount = $totalAmount/ $duration;
+        $interestPM = ($totalAmount - $currentProductPrice);
+        //channge made here
+        array_push($emiCalulationData, $emiamount, $totalAmount, $monthlyAmount,$interestPM);    
         // print_r($EMI); exit;
-        return $EMI;
+        return $emiCalulationData;
     }
     
     public function getGrandTotal(){
