@@ -16,18 +16,21 @@ class View extends AbstractProduct
     protected $grandTotal;
     // protected $messageManager;
     protected $json;
+    protected $scopeConfigInterface;
 
     public function __construct(Context $context, array $data = [],
     // ManagerInterface $messageManager,
     \Magento\Framework\Registry $registry, AllemiFactory $allemiFactory, AllemiRepositoryInterface $allemiRepositoryInterface, 
     \Magento\Checkout\Model\Cart $grandTotal,
-    \Magento\Framework\Serialize\Serializer\Json $json
+    \Magento\Framework\Serialize\Serializer\Json $json,
+    \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfigInterface
     )
     {
         $this->_allemiFactory = $allemiFactory;
         $this->_allemiRepositoryInterface = $allemiRepositoryInterface;
         $this->registry = $registry;
         $this->grandTotal = $grandTotal;
+        $this->scopeConfigInterface = $scopeConfigInterface;
         // $this->messageManager = $messageManager;
         $this->json = $json;
         parent::__construct($context, $data);
@@ -100,6 +103,10 @@ class View extends AbstractProduct
     public function getGrandTotal(){
         // return $this->grandTotal->getQuote()->getBaseSubtotal();
         return $this->grandTotal->getQuote()->getGrandTotal();
+    }
+
+    public function getSubTotal(){
+        return $this->grandTotal->getQuote()->getBaseSubtotal();
     }
 
 
