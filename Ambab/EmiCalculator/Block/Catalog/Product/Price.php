@@ -3,15 +3,21 @@ namespace Ambab\EmiCalculator\Block\Catalog\Product;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Block\Product\AbstractProduct;
 use Magento\Checkout\Model\Cart;
+use Magento\Framework\View\Element\Template;
+use Magento\Catalog\Model\Product;
+use Magento\Framework\Registry;
+use Magento\Framework\Session\SessionManagerInterface;
+use Magento\CatalogInventory\Api\StockRegistryInterface;
 
 class Price extends AbstractProduct
 {
     protected $registry;
     protected $grandTotal;
     protected $scopeConfigInterface;
-    protected $stockState;
-    private $stockRegistry;
-
+    protected $_Product;
+    protected $session;
+    protected $stockRegistry;
+    
     /**
  * @var 
  */
@@ -20,17 +26,19 @@ class Price extends AbstractProduct
     public function __construct(Context $context, array $data = [],
     // ManagerInterface $messageManager,
     \Magento\Framework\Registry $registry, 
-    \Magento\Checkout\Model\Cart $grandTotal,
-    \Magento\CatalogInventory\Api\StockStateInterface $stockState,
+    \Magento\Checkout\Model\Cart $grandTotal,    
     \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfigInterface,
-    \Magento\CatalogInventory\Api\StockRegistryInterface $stockRegistry
+    Product $product,
+    SessionManagerInterface $session,
+    StockRegistryInterface $stockRegistry
     )
     {
         $this->registry = $registry;
         $this->grandTotal = $grandTotal;
-        $this->stockState = $stockState;
-        $this->stockRegistry = $stockRegistry;
-        $this->scopeConfigInterface = $scopeConfigInterface;
+         $this->scopeConfigInterface = $scopeConfigInterface;
+         $this->_Product = $product;
+         $this->session = $session;
+         $this->stockRegistry = $stockRegistry;
         parent::__construct($context, $data);
     }
 
@@ -53,15 +61,15 @@ class Price extends AbstractProduct
         return $this->scopeConfigInterface->getValue('sales/minimum_order/amount');
     }
 
-    public function getStockQty($productId)
-    {
-        return $this->stockState->getStockQty($productId);
+    public function getRemainingQty($productId) {
+        $stock = $this->stockRegistry->getStockItem($productId);
+        return $stock->getQty();
     }
 
-    // public function getStockRegistry()
-    // {
-    //     return $this->stockRegistry;
-    // }
+    protected function getCurrentProduct() {
+        return $this->_registry->registry('current_product')->getId();
+    }
+
 }
 
 
