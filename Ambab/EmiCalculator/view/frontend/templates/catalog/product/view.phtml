@@ -1,6 +1,6 @@
 
 <?php 
-$block->JSONData();
+// $block->JSONData();
 
 ?>
 <div id="popup-modal">
@@ -29,7 +29,7 @@ $block->JSONData();
                     $data = $block->getEmiDetails($bank['bank_name']);
                     foreach ($data->getData() as $emidetails)
                     {
-                        // $duration = $emidetails['duration'];
+                        $duration = $emidetails['duration'];
                         // $rateOfInterest = $emidetails['duration'];
                         // $emiamount = $block->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $duration);
                         // $totalAmount = $block->getTotalAmount($currentProductPrice, $rateOfInterest,$emiamount,$duration);
@@ -46,10 +46,10 @@ $block->JSONData();
                         array_push($minAmount, $emiamount[0]);
                         
                         echo "<tr>";
-                        echo "<td>" . $duration."EMIs @ $". round($emiamount,2)."</td>";
+                        echo "<td>" . $duration."EMIs @ $". round($emiamount[0],2)."</td>";
                         // echo "<td>" . $monthlyAmount."RS | ". $duration." Months "."</td>";
-                        echo "<td>"."$".round($interestPM, 2)." (".$emidetails['interest_rate']."%)"."</td>";
-                        echo "<td>"."$".round($totalAmount,2)."</td>";
+                        echo "<td>"."$".round($emiamount[3], 2)." (".$emidetails['interest_rate']."%)"."</td>";
+                        echo "<td>"."$".round($emiamount[1],2)."</td>";
                         echo "</tr>";
                     }
                 ?>

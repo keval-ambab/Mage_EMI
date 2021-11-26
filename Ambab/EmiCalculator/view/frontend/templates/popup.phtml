@@ -34,16 +34,15 @@
             
                         foreach ($data->getData() as $emidetails)
                         {
+
                             $duration = $emidetails['duration'];
                             $emiamount = $blockobj->getEmiAmount($currentProductPrice, $emidetails['interest_rate'], $emidetails['duration']);
-                            $totalAmount = $emiamount * $duration;
-                            $monthlyAmount = $totalAmount/ $duration;
-                            $interestPM = ($totalAmount - $currentProductPrice);
+                                                   
                             echo "<tr>";
                             echo "<th> <input type='radio' name='select' /></th>";
-                            echo "<td>" . $emidetails['duration']."EMIs @ $". round($emiamount,2)."</td>";
-                            echo "<td>"."$".round($interestPM, 2)." (".$emidetails['interest_rate']."%)"."</td>";
-                            echo "<td>"."$".round($totalAmount,2)."</td>";
+                            echo "<td>" . $duration."EMIs @ $". round($emiamount[0],2)."</td>";
+                            echo "<td>"."$".round($emiamount[3], 2)." (".$emidetails['interest_rate']."%)"."</td>";
+                            echo "<td>"."$".round($emiamount[1],2)."</td>";
                             echo "</tr>";
                         }
                     ?>

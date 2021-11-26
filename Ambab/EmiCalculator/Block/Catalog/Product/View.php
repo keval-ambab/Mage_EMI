@@ -114,7 +114,7 @@ class View extends AbstractProduct
                 }
         }
         echo json_encode($jsondata,JSON_PRETTY_PRINT); 
-        exit;
+        // exit;
         
     }
 }
