@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/rest_test/getProduct/:id" method="GET">
+        <service class="Ambab\RestApi\Api\ProductRepositoryInterface" method="getItem" />
+        <resources>
+            <resource ref="Ambab_RestApi::products_get" />
+        </resources>
+    </route>
+    <route url="/V1/rest_test/getProducts" method="GET">
+        <service class="Ambab\RestApi\Api\ProductRepositoryInterface" method="getList" />
+        <resources>
+            <resource ref="Ambab_RestApi::products_get_list" />
+        </resources>
+    </route>
+    <route url="/V1/rest_test/setDescription" method="PUT">
+        <service class="Ambab\RestApi\Api\ProductRepositoryInterface" method="setDescription" />
+        <resources>
+            <resource ref="Ambab_RestApi::products_set_description" />
+        </resources>
+    </route>
+</routes>

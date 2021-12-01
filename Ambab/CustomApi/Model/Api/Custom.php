@@ -32,39 +32,30 @@ class Custom
     public function getPost($id)
     {
         try {
-
+            $i = 0;
             $orderInfo = [];
             $order_info = $this->OrderRepositoryInterface->get($id);
-            
-
+            $orderInfo['Order_Entity_ID'] = $order_info->getEntityId();
             
             foreach($order_info->getAllItems() as $item){
-
-                
-                $orderInfo['Order_ID'] = $item->getId();
-                $orderInfo['Order_Name'] = $item->getName();
-                $orderInfo['Order_Qty'] = $item->getQtyOrdered();
-                $orderInfo['Order_Price'] = $item->getPrice(); 
-                $orderInfo['Order_Discount_Price'] = $item->getDiscountAmount(); 
-                
+                $productID = $orderInfo['Order_ID'] = $order_info->getId();
+                $orderInfo['items'][$i]['Order_Name'] = $item->getName();
+                $orderInfo['items'][$i]['Order_Qty'] = $item->getQtyOrdered();
+                $orderInfo['items'][$i]['Order_Special_Price'] = $item->getPrice(); 
+                $orderInfo['items'][$i]['Order_Original_Price'] = $item->getOriginalPrice(); 
+                $orderInfo['items'][$i]['Order_Discount_Price'] = $item->getDiscountAmount(); 
                 // Get Product Image url
-                $product = $this->productRepository->getById($orderInfo['Order_ID']);
+                $product = $this->productRepository->getById($productID);
                 $store = $this->_storeManager->getStore();
-                $orderInfo['Order_image_url'] = $store->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product'.$product->getImage();
+                $orderInfo['items'][$i]['Order_image_url'] = $store->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA) . 'catalog/product'.$product->getImage();
+                $i++;
             }
-            
-            $shipping_amount['Shipping_Amount']=$order_info->getShippingAmount();
-            $shipping_amount['Order_Payment_Method'] = $order_info->getPayment()->getMethod();
-            
-            $shipping_address['Shipping_City']=$order_info->getShippingAddress()->getCity();
-            $shipping_address['Shipping_RegionId']=$order_info->getShippingAddress()->getRegionId();
-            $shipping_address['Shipping_CountryId']=$order_info->getShippingAddress()->getCountryId();
-            // $shipping_address['Shipping_Amount']=$order_info->getShippingAddress()->getData();
-
- 
-            // array_push($orderInfo,);
-
-          $response = ['success' => true, 'message' => $orderInfo,$shipping_amount,$shipping_address];
+            $shipping_details['Shipping_Amount']=$order_info->getShippingAmount();
+            $shipping_details['Order_Payment_Method'] = $order_info->getPayment()->getMethod();
+            $shipping_details['Shipping_City']=$order_info->getShippingAddress()->getCity();
+            $shipping_details['Shipping_RegionId']=$order_info->getShippingAddress()->getRegionId();
+            $shipping_details['Shipping_CountryId']=$order_info->getShippingAddress()->getCountryId();
+          $response = ['success' => true, 'message' => $orderInfo,$shipping_details];
         } catch (\Exception $e) {
             $response = ['success' => false, 'message' => $e->getMessage()];
             $this->logger->info($e->getMessage());
@@ -73,3 +64,4 @@ class Custom
         return $response; 
    }
 }
+

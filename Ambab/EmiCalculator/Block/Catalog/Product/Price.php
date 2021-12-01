@@ -8,6 +8,8 @@ use Magento\Catalog\Model\Product;
 use Magento\Framework\Registry;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\CatalogInventory\Api\StockRegistryInterface;
+use Magento\CatalogInventory\Model\Stock\StockItemRepository;
+use Magento\InventorySalesAdminUi\Model\GetSalableQuantityDataBySku; 
 
 class Price extends AbstractProduct
 {
@@ -17,7 +19,9 @@ class Price extends AbstractProduct
     protected $_Product;
     protected $session;
     protected $stockRegistry;
-    
+    protected $stockItemRepository;
+    protected $getSalableQuantityDataBySku;
+
     /**
  * @var 
  */
@@ -30,15 +34,20 @@ class Price extends AbstractProduct
     \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfigInterface,
     Product $product,
     SessionManagerInterface $session,
-    StockRegistryInterface $stockRegistry
+    StockRegistryInterface $stockRegistry,
+    GetSalableQuantityDataBySku $getSalableQuantityDataBySku,
+    StockItemRepository $stockItemRepository
+
     )
     {
         $this->registry = $registry;
         $this->grandTotal = $grandTotal;
-         $this->scopeConfigInterface = $scopeConfigInterface;
-         $this->_Product = $product;
-         $this->session = $session;
-         $this->stockRegistry = $stockRegistry;
+        $this->scopeConfigInterface = $scopeConfigInterface;
+        $this->_Product = $product;
+        $this->session = $session;
+        $this->stockRegistry = $stockRegistry;
+        $this->stockItemRepository = $stockItemRepository;
+        $this->getSalableQuantityDataBySku = $getSalableQuantityDataBySku;
         parent::__construct($context, $data);
     }
 
@@ -70,7 +79,17 @@ class Price extends AbstractProduct
         return $this->_registry->registry('current_product')->getId();
     }
 
-}
+       // get stock value
+    public function getStockItem($productId)
+    {
+        return $this->stockItemRepository->get($productId);
+    }
 
-
+    public function getProductSalableQty($sku)
+    {
+         $salable = $this->getSalableQuantityDataBySku->execute($sku);
+         return $salable[0]['qty'];
+        // return $salable;
+    }
+   }
 

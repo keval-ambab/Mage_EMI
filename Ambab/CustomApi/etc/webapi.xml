@@ -3,7 +3,7 @@
     <route method="GET" url="/V1/custom/custom-api/:id">
         <service class="Ambab\CustomApi\Api\CustomInterface" method="getPost"/>
         <resources>
-            <resource ref="anonymous"/>
+            <resource ref="Magento_Cart::manage" />
         </resources>
     </route>
 </routes>
